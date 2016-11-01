@@ -268,9 +268,11 @@ boolean PuncPreFilter(void* arg, FcitxKeySym sym, unsigned int state,
     FcitxPuncState *puncState = (FcitxPuncState*)arg;
 
 	FcitxIM *im = FcitxInstanceGetCurrentIM(puncState->owner);
-	if (im == NULL || strcmp("sogoupinyin", im->uniqueName) != 0)
+	if (im == NULL)
 		return false;
-	
+	if(strcmp("sogoupinyin", im->uniqueName) != 0 && strcmp("sogouwubi", im->uniqueName) != 0)	
+		return false;
+
     if (FcitxHotkeyIsHotKeySimple(sym, state) &&
         !FcitxHotkeyIsHotKeyDigit(sym, state) && !IsHotKeyPunc(sym, state))
         puncState->bLastIsNumber = false;
@@ -290,7 +292,9 @@ boolean ProcessPunc(void* arg, FcitxKeySym sym, unsigned int state, INPUT_RETURN
     boolean lastIsNumber = puncState->bLastIsNumber;
 
 	FcitxIM *im = FcitxInstanceGetCurrentIM(puncState->owner);
-	if (im == NULL || strcmp("sogoupinyin", im->uniqueName) != 0)
+	if (im == NULL)
+		return false;
+	if(strcmp("sogoupinyin", im->uniqueName) != 0 && strcmp("sogouwubi", im->uniqueName) != 0)	
 		return false;
 
     char *pPunc = NULL;
